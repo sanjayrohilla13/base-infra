@@ -6,4 +6,4 @@ This is a simple Readme file.
 
 Addition of new sources
 
-Addition of code from Branch updates
+I hope less problems will happen - Master Branch
