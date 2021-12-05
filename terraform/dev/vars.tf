@@ -1,4 +1,6 @@
 variable "ecr-name" {
-    type = string
-    description = "ECR Name"
+    value = "test-app"
+}
+varibale "ecr-mutablity" {
+    value = "MUTABLE"
 }
