@@ -30,7 +30,7 @@ pipeline {
                         set +e    
                         cd terraform/${ENVIRONMENT}
                         pwd
-                        terraform init
+                        terraform init -reconfigure
                         terraform get -update
                         terraform plan
                         TF_LOG=DEBUG terraform plan -auto-approve=true
