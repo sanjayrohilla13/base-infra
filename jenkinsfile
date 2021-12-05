@@ -32,8 +32,7 @@ pipeline {
                         terraform init
                         terraform get -update
                         terraform plan
-                        TF_LOG=DEBUG terraform plan \
-                        -auto-approve=true
+                        TF_LOG=DEBUG terraform plan -auto-approve=true
                         """, returnStdout: true)
                 }  
             }  
