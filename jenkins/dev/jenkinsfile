@@ -12,6 +12,7 @@ pipeline {
         choice(name: 'DOCKER_SRC', choices: ['ECR','artifactory'], description: 'Source of Sonarqube Docker Source')
         choice(name: 'STAGE', choices: ['plan','deploy','destroy'], description: 'Terraform Stage to Apply')
         }
+    
     stages {
         stage('Download GIT Hub Repo') {
             steps {
@@ -42,46 +43,6 @@ pipeline {
                     """, returnStdout: true)
                 }  
             } 
-        } 
-
-        stage('Apply-Base-Infra') {
-            when{
-                expression{STAGE_TO_RUN.contains('apply')}
-                }
-            steps {
-                withCredentials([aws(accessKeyVariable:'AWS_ACCESS_KEY_ID',credentialsId:'srv-ecr-usr',secretKeyVariable:'AWS_SECRET_ACCESS_KEY')]) {
-                    sh (script: """
-                        cd terraform/${ENVIRONMENT}
-                        pwd
-                        terraform init
-                        terraform get -update
-                        terraform plan
-                        TF_LOG=DEBUG terraform apply \
-                        -auto-approve=true
-                        """, returnStdout: true)
-                    }  
-                }  
-            }        
-        stage('Destroy-Base-Infra') {
-            when{
-                expression{ STAGES_TO_RUN.contains('destroy')}
-                }
-
-            steps {
-                echo "Runnning terraform Destroy in ${ENVIRONMENT}"
-                withCredentials([aws(accessKeyVariable:'AWS_ACCESS_KEY_ID',credentialsId:'srv-ecr-usr',secretKeyVariable:'AWS_SECRET_ACCESS_KEY')]){
-                    sh (script: """
-                        cd terraform/${ENVIRONMENT}
-                        pwd
-                        terraform init
-                        terraform get -update
-                        terraform plan -destroy
-                        TF_LOG=DEBUG terraform destroy \
-                        -auto-approve=true
-                        """, returnStdout: true)
-                    }  
-                }  
-           
-            }
-        }
+        }         
     }
+}
