@@ -67,7 +67,8 @@ pipeline {
 
             steps {
                 echo "Runnning terraform Destroy in ${ENVIRONMENT}"
-                withCredentials([aws(accessKeyVariable:'AWS_ACCESS_KEY_ID',credentialsId:'srv-ecr-usr',secretKeyVariable:'AWS_SECRET_ACCESS_KEY')]) {
+                withCredentials([aws(accessKeyVariable:'AWS_ACCESS_KEY_ID',credentialsId:'srv-ecr-usr',secretKeyVariable:'AWS_SECRET_ACCESS_KEY')])
+                {
                 sh (script: """
                     cd terraform/${ENVIRONMENT}
                     pwd
@@ -79,8 +80,7 @@ pipeline {
                     """, returnStdout: true)
                     }  
                 }  
-            }    
-        
-        }
+           
+            }
     }
 }
