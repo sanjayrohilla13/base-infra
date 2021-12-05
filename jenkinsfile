@@ -19,9 +19,26 @@ pipeline {
                 script {
                     //git credentialsId: 'sanjayrohilla13', branch: 'ecr-terraform', url: 'https://github.com/sanjayrohilla13/ecr-upgarde.git', poll: false
                     git 'https://github.com/sanjayrohilla13/base-infra'
-                   }
                 }
             }
         }
     }
+// plan stage
+    stage('Plan-Base-Infra') {
+            when{expression{STAGE_TO_RUN.contains('plan')}}
+            steps {
+                withCredentials([aws(accessKeyVariable:'AWS_ACCESS_KEY_ID',credentialsId:'srv-ecr-usr',secretKeyVariable:'AWS_SECRET_ACCESS_KEY')]) {
+                sh (script: """
+                    cd terraform/${ENVIRONMENT}
+                    pwd
+                    terraform init
+                    terraform get -update
+                    terraform plan
+                    TF_LOG=DEBUG terraform plan \
+                    -auto-approve=true
+                    """, returnStdout: true)
+                }  
+            }  
+    }
+}
 
