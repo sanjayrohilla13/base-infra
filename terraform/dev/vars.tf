@@ -1,6 +1,6 @@
 variable "ecr-name" {
     value = "test-app"
 }
-varibale "ecr-mutablity" {
+variable "ecr-mutablity" {
     value = "MUTABLE"
 }
