@@ -5,13 +5,13 @@ pipeline {
         AWS_DEFAULT_REGION = 'ap-southeast-2'
         //TEMP_VAR = credentials('srv-ecr-usr')
         def DOCKER_SOURCE = " "
-    }
+        }
 
     parameters{
         choice(name: 'ENVIRONMENT', choices: ['dev','prod'], description: 'Select the Environment Name')
         choice(name: 'DOCKER_SRC', choices: ['ECR','artifactory'], description: 'Source of Sonarqube Docker Source')
         choice(name: 'STAGE', choices: ['plan','deploy','destroy'], description: 'Terraform Stage to Apply')
-    }
+        }
     stages {
         stage('Download GIT Hub Repo') {
             steps {
@@ -19,17 +19,18 @@ pipeline {
                 script {
                     //git credentialsId: 'sanjayrohilla13', branch: 'ecr-terraform', url: 'https://github.com/sanjayrohilla13/ecr-upgarde.git', poll: false
                     git 'https://github.com/sanjayrohilla13/base-infra'
+                    }
                 }
             }
-        }
 
                  
         stage('Plan-Base-Infra') {
             when{
                 expression{STAGE_TO_RUN.contains('plan')}
-            }
+                }
             steps {
-                withCredentials([aws(accessKeyVariable:'AWS_ACCESS_KEY_ID',credentialsId:'srv-ecr-usr',secretKeyVariable:'AWS_SECRET_ACCESS_KEY')]) {
+                withCredentials([aws(accessKeyVariable:'AWS_ACCESS_KEY_ID',credentialsId:'srv-ecr-usr',secretKeyVariable:'AWS_SECRET_ACCESS_KEY')]) 
+                {
                 sh (script: """
                     cd terraform/${ENVIRONMENT}
                     pwd
@@ -39,47 +40,48 @@ pipeline {
                     TF_LOG=DEBUG terraform plan \
                     -auto-approve=true
                     """, returnStdout: true)
-                    }  
                 }  
-            }
+            } 
+        } 
+
         stage('Apply-Base-Infra') {
             when{
                 expression{STAGE_TO_RUN.contains('apply')}
-            }
+                }
             steps {
                 withCredentials([aws(accessKeyVariable:'AWS_ACCESS_KEY_ID',credentialsId:'srv-ecr-usr',secretKeyVariable:'AWS_SECRET_ACCESS_KEY')]) {
-                sh (script: """
-                    cd terraform/${ENVIRONMENT}
-                    pwd
-                    terraform init
-                    terraform get -update
-                    terraform plan
-                    TF_LOG=DEBUG terraform apply \
-                    -auto-approve=true
-                    """, returnStdout: true)
+                    sh (script: """
+                        cd terraform/${ENVIRONMENT}
+                        pwd
+                        terraform init
+                        terraform get -update
+                        terraform plan
+                        TF_LOG=DEBUG terraform apply \
+                        -auto-approve=true
+                        """, returnStdout: true)
                     }  
                 }  
             }        
         stage('Destroy-Base-Infra') {
             when{
                 expression{ STAGES_TO_RUN.contains('destroy')}
-            }
+                }
 
             steps {
                 echo "Runnning terraform Destroy in ${ENVIRONMENT}"
-                withCredentials([aws(accessKeyVariable:'AWS_ACCESS_KEY_ID',credentialsId:'srv-ecr-usr',secretKeyVariable:'AWS_SECRET_ACCESS_KEY')])
-                {
-                sh (script: """
-                    cd terraform/${ENVIRONMENT}
-                    pwd
-                    terraform init
-                    terraform get -update
-                    terraform plan -destroy
-                    TF_LOG=DEBUG terraform destroy \
-                    -auto-approve=true
-                    """, returnStdout: true)
+                withCredentials([aws(accessKeyVariable:'AWS_ACCESS_KEY_ID',credentialsId:'srv-ecr-usr',secretKeyVariable:'AWS_SECRET_ACCESS_KEY')]){
+                    sh (script: """
+                        cd terraform/${ENVIRONMENT}
+                        pwd
+                        terraform init
+                        terraform get -update
+                        terraform plan -destroy
+                        TF_LOG=DEBUG terraform destroy \
+                        -auto-approve=true
+                        """, returnStdout: true)
                     }  
                 }  
            
             }
+        }
     }
