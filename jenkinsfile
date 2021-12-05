@@ -17,8 +17,7 @@ pipeline {
             steps {
                 echo 'Downloading..'
                 script {
-                    //git credentialsId: 'sanjayrohilla13', branch: 'ecr-terraform', url: 'https://github.com/sanjayrohilla13/ecr-upgarde.git', poll: false
-                    git 'https://github.com/sanjayrohilla13/base-infra'
+                    git credentialsId: 'sanjayrohilla13', branch: 'main', url: 'https://github.com/sanjayrohilla13/base-infra', poll: false
                 }
             }
         }
