@@ -1,1 +1,0 @@
-ecr-name = "app1-repo"

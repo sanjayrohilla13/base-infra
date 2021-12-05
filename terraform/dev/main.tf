@@ -1,4 +1,4 @@
-//../terraform/common/main.tf
+#../terraform/common/main.tf
 
 resource "aws_ecr_repository" "app-ecr" {
   name                 = "test-repo"
