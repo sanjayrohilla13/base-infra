@@ -27,13 +27,12 @@ pipeline {
             steps {
                 withCredentials([aws(accessKeyVariable:'AWS_ACCESS_KEY_ID',credentialsId:'srv-ecr-usr',secretKeyVariable:'AWS_SECRET_ACCESS_KEY')]) {
                     sh (script: """
-                        set +e    
+                        set -x   
                         cd terraform/${ENVIRONMENT}
                         pwd
-                        terraform init -reconfigure
+                        terraform init
                         terraform get -update
-                        terraform plan
-                        TF_LOG=DEBUG terraform plan -auto-approve=true
+                        TF_LOG=DEBUG terraform plan
                         """, returnStdout: true)
                 }  
             }  
