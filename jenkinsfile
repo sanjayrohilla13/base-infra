@@ -30,6 +30,7 @@ pipeline {
                         set -x   
                         cd terraform/domain/${ENVIRONMENT}
                         pwd
+                        echo "Sanjay"
                         terraform init
                         terraform get -update
                         TF_LOG=DEBUG terraform plan
