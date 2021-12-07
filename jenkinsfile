@@ -30,7 +30,7 @@ pipeline {
                         set -x   
                         cd terraform/domain/${ENVIRONMENT}
                         pwd
-                        terraform init -reconfigure
+                        terraform init
                         terraform get -update
                         TF_LOG=DEBUG terraform plan
                         """, returnStdout: true)
