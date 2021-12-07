@@ -6,24 +6,24 @@ resource "aws_ecr_repository" "ecr" {
   }
 }
 
-resource "aws_ecr_lifecycle_policy" "policy" {
-    repository = aws_ecr_repository.ecr.name
-    policy = <<EOF
-    {
-        "rules": [
-            "rulePriority": 1,
-            "description": "Expire images older than ${var.expiry_days} days"
-            "selection": {
-                "tagStatus": "any",
-                "countType": "sinceImagePushed",
-                "countUnit": "days",
-                "countNumber": ${var.expiry_days}
-            },
-            "action": {
-                "type": "expire"
-            }
-        }
-    ]
-}
-EOF
-}
+//resource "aws_ecr_lifecycle_policy" "policy" {
+//    repository = aws_ecr_repository.ecr.name
+//    policy = <<EOF
+//    {
+//        "rules": [
+//            "rulePriority": 1,
+//            "description": "Expire images older than ${var.expiry_days} days",
+//                "selection": {
+//                "tagStatus": "any",
+//                "countType": "sinceImagePushed",
+//                "countUnit": "days",
+//                "countNumber": ${var.expiry_days}
+//            },
+//            "action": {
+//                "type": "expire"
+//            }
+//        }
+//    ]
+//}
+//EOF
+//}
