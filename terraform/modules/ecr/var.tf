@@ -1,3 +1,3 @@
 variable "application_name" { }
-variable "ecr_name" { }
+variable "name" { }
 variable "expiry_days" { }
