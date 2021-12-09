@@ -57,7 +57,7 @@ pipeline {
         }
         // destroy stage
         stage('Destroy-Base-Infra') {
-            when{expression{STAGE_TO_RUN.contains('apply')}}
+            when{expression{STAGE_TO_RUN.contains('deploy')}}
             steps {
                 withCredentials([aws(accessKeyVariable:'AWS_ACCESS_KEY_ID',credentialsId:'srv-ecr-usr',secretKeyVariable:'AWS_SECRET_ACCESS_KEY')]) {
                     sh (script: """
