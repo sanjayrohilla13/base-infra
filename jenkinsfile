@@ -50,7 +50,7 @@ pipeline {
                         echo "Sanjay"
                         terraform init
                         terraform get -update
-                        TF_LOG=DEBUG terraform apply
+                        TF_LOG=DEBUG terraform apply -auto-approve
                         """, returnStdout: true)
                 }  
             }  
@@ -67,7 +67,7 @@ pipeline {
                         echo "Sanjay"
                         terraform init
                         terraform get -update
-                        TF_LOG=DEBUG terraform destroy
+                        TF_LOG=DEBUG terraform destroy -auto-approve
                         """, returnStdout: true)
                 }  
             }  
