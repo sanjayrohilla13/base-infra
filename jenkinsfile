@@ -38,6 +38,40 @@ pipeline {
                 }  
             }  
         }
+        // Apply stage
+        stage('Apply-Base-Infra') {
+            when{expression{STAGE_TO_RUN.contains('apply')}}
+            steps {
+                withCredentials([aws(accessKeyVariable:'AWS_ACCESS_KEY_ID',credentialsId:'srv-ecr-usr',secretKeyVariable:'AWS_SECRET_ACCESS_KEY')]) {
+                    sh (script: """
+                        set -x   
+                        cd terraform/domain/${ENVIRONMENT}
+                        pwd
+                        echo "Sanjay"
+                        terraform init
+                        terraform get -update
+                        TF_LOG=DEBUG terraform apply
+                        """, returnStdout: true)
+                }  
+            }  
+        }
+        // destroy stage
+        stage('Destroy-Base-Infra') {
+            when{expression{STAGE_TO_RUN.contains('apply')}}
+            steps {
+                withCredentials([aws(accessKeyVariable:'AWS_ACCESS_KEY_ID',credentialsId:'srv-ecr-usr',secretKeyVariable:'AWS_SECRET_ACCESS_KEY')]) {
+                    sh (script: """
+                        set -x   
+                        cd terraform/domain/${ENVIRONMENT}
+                        pwd
+                        echo "Sanjay"
+                        terraform init
+                        terraform get -update
+                        TF_LOG=DEBUG terraform destroy
+                        """, returnStdout: true)
+                }  
+            }  
+        }
     }
 }
 
