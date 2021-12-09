@@ -1,5 +1,5 @@
 module "ecr" {
-  for_each          =   toset(["app1-repo", "app2-repo"])
+  for_each          =   toset(["repo1", "repo2"])
   source            = "../../modules/ecr"
   application_name  = "app1"
   expiry_days       = var.expiry_days
