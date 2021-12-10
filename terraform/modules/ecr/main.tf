@@ -11,6 +11,7 @@ resource "aws_ecr_lifecycle_policy" "policy" {
     policy = <<EOF
     {
         "rules": [
+		{
             "rulePriority": 1,
             "description": "Expire images older than ${var.ecr_expiry_days} days",
                 "selection": {
