@@ -17,7 +17,7 @@ pipeline {
             steps {
                 echo 'Downloading..'
                 script {
-                    git credentialsId: 'sanjayrohilla13', branch: params.BRANCH, url: 'https://github.com/sanjayrohilla13/base-infra', poll: false
+                    git branch: params.BRANCH, poll: false, url: 'https://github.com/sanjayrohilla13/base-infra.git'
                 }
             }
         }
