@@ -33,7 +33,7 @@ pipeline {
                         echo "Sanjay"
                         terraform init
                         terraform get -update
-                        terraform plan
+                        TF_LOG=DEBUG terraform plan
                         """, returnStdout: true)
                 }  
             }  
