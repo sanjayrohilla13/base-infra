@@ -12,7 +12,7 @@ resource "aws_ecr_lifecycle_policy" "policy" {
     {
         "rules": [
             "rulePriority": 1,
-            "description": "Expire images older than ${var.expiry_days} days",
+            "description": "Expire images older than ${var.ecr_expiry_days} days",
                 "selection": {
                 "tagStatus": "any",
                 "countType": "sinceImagePushed",
